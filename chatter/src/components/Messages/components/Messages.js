@@ -32,17 +32,14 @@ function Messages() {
     socket.on(bottySocketEvents.BOT_TYPING, () => {
       setIsTyping(true);
     });
-  }, []);
-
-  useEffect(() => {
     socket.on(bottySocketEvents.BOT_MESSAGE, (message) => {
       playReceive();
       setIsTyping(false);
-      setMessages([...messages, { message, user: userTypes.BOT }]);
+      setMessages((prevState) => [...prevState, { message, user: userTypes.BOT }]);
       setLatestMessage('bot', message);
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     });
-  }, [messages])
+  }, []);
 
   const sendMessage = () => {
     socket.emit(bottySocketEvents.USER_MESSAGE, message);
